@@ -17,8 +17,9 @@ module OmniAuth
 
       info do
         {
-          'name' => raw_properties['nickname'],
-          'image' => raw_properties['thumbnail_image'],
+          'name' => raw_properties['profile']['nickname'],
+          'image' => raw_properties['profile']['thumbnail_image_url'],
+          'email' => raw_properties['email']
         }
       end
 
@@ -59,11 +60,11 @@ module OmniAuth
 
     private
       def raw_info
-        @raw_info ||= access_token.get('https://kapi.kakao.com/v1/user/me', {}).parsed || {}
+        @raw_info ||= access_token.get('https://kapi.kakao.com/v2/user/me', {}).parsed || {}
       end
 
       def raw_properties
-        @raw_properties ||= raw_info['properties']
+        @raw_properties ||= raw_info['kakao_account']
       end
     end
   end
